@@ -14,11 +14,14 @@ import "fmt"
  * 缺点：空间复杂度较高，不适用于数据量较大的问题
  */
 func knapsack(w []int, v []int, c int) int {
+	//物品数量
 	n := len(w)
+	//
 	dp := make([][]int, n+1)
 	for i := 0; i <= n; i++ {
 		dp[i] = make([]int, c+1)
 	}
+	//将dp[0]作为原始缓存，从dp[1]开始装
 	for i := 1; i <= n; i++ {
 		for j := 1; j <= c; j++ {
 			if j < w[i-1] {
@@ -26,6 +29,9 @@ func knapsack(w []int, v []int, c int) int {
 				dp[i][j] = dp[i-1][j]
 			} else {
 				// 能装入第i个物品
+				s := dp[i-1][j]
+				t := dp[i-1][j-w[i-1]]+v[i-1]
+				fmt.Println(s, t)
 				dp[i][j] = max(dp[i-1][j], dp[i-1][j-w[i-1]]+v[i-1])
 			}
 		}
@@ -42,5 +48,5 @@ func max(a, b int) int {
 }
 
 func main() {
-	fmt.Println(knapsack([]int{6, 6}, []int{9, 10}, 6))
+	fmt.Println(knapsack([]int{6, 7, 8}, []int{10, 9, 4}, 15))
 }
